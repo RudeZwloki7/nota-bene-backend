@@ -20,6 +20,6 @@ exclude =
     __pycache__,
     .env,
     *.md,
-    alembic/
+    *alembic*
 
 max-line-length = 120
