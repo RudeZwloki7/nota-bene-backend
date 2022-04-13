@@ -1,6 +1,10 @@
 Flask
-Flask-SQLAlchemy
+SQLAlchemy
 Bcrypt-Flask
 Flask-Login
 Flask-WTF
 psycopg2
+alembic
+python-dotenv
+pre-commit
+flake8-import-order
