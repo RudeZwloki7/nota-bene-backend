@@ -6,6 +6,8 @@ from db.base import Base
 
 
 class User(Base):
+    public_id = Column(String(50), unique=True)
+    name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password = Column(String)
     tasks = relationship("Task")

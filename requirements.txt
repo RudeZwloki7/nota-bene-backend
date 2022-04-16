@@ -1,11 +1,9 @@
 Flask
 SQLAlchemy
-Bcrypt-Flask
-Flask-Login
-Flask-WTF
-psycopg2
+psycopg2-binary
 alembic
 python-dotenv
 pre-commit
 flake8
 flake8-import-order
+PyJWT
