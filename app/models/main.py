@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+from datetime import date, datetime
 from operator import index
 from sqlalchemy.orm import relationship
 from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
@@ -13,10 +15,17 @@ class User(Base):
     tasks = relationship("Task")
 
 
+@dataclass
 class Task(Base):
+    label: int
+    content: str
+    date_expire: date
+    datetime_expire: datetime
+    is_complete: bool
+
     label = Column(String, default="Empty label")
     content = Column(String, default="")
-    date_expire = Column(Date)
+    date_expire = Column(Date, default=None)
     datetime_expire = Column(DateTime)
     is_complete = Column(Boolean, default=False)
 
