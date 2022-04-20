@@ -3,12 +3,14 @@ from datetime import date, datetime
 from operator import index
 from sqlalchemy.orm import relationship
 from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 from sqlalchemy.schema import Table
 from db.base import Base
 
 
 class User(Base):
-    public_id = Column(String(50), unique=True)
+    public_id = Column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password = Column(String)
