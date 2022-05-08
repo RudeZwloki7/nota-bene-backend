@@ -13,7 +13,8 @@ ignore =
     # I100: Your import statements are in the wrong order.
     I100,
     # I201: Missing newline between import groups.
-    I201
+    I201,
+    I202
 exclude =
     .git,
     .idea,

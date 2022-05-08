@@ -21,8 +21,8 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from app.core.utils import get_db_url
-from app.models.collector import Base
+from webapp.core.utils import get_db_url
+from webapp.models.collector import Base
 
 config.set_main_option("sqlalchemy.url", get_db_url())
 

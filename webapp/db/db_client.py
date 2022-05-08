@@ -2,8 +2,8 @@ import os
 import sqlalchemy
 from sqlalchemy import inspect
 from sqlalchemy.orm import sessionmaker
-from models.main import Base, Task, User
-from core.utils import get_db_url
+from webapp.models.main import Base, Task, User
+from webapp.core.utils import get_db_url
 
 
 class DBClient:
