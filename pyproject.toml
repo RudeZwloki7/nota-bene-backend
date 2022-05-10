@@ -14,8 +14,8 @@ python-dotenv = "^0.20.0"
 pre-commit = "^2.19.0"
 flake8 = "^4.0.1"
 flake8-import-order = "^0.18.1"
-PyJWT = "^2.3.0"
 loguru = "^0.6.0"
+PyJWT = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "^1.6.0"

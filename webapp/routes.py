@@ -84,7 +84,7 @@ def refresh_tokens(refresh_token):
 @app.route('/login', methods=['POST'])
 def login():
     # creates dictionary of form data
-    auth = request.form
+    auth = request.json
 
     if not auth or not auth.get('email') or not auth.get('password'):
         # returns 401 if any email or / and password is missing
@@ -126,7 +126,7 @@ def login():
 @app.route('/register', methods=['POST'])
 def register():
     # creates a dictionary of the form data
-    data = request.form
+    data = request.json
 
     # gets name, email and password
     name, email = data.get('name'), data.get('email')
