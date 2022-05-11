@@ -1,3 +1,4 @@
+import uuid
 import jwt
 from jwt import ExpiredSignatureError, InvalidSignatureError, InvalidTokenError
 import json
@@ -9,6 +10,7 @@ from webapp import db
 from flask import jsonify, make_response, redirect, request, url_for
 from webapp.db.db_client import Task, User
 from loguru import logger
+from flask_cors import cross_origin
 
 
 @app.route('/')
@@ -30,7 +32,7 @@ def token_required(f):
         try:
             data = jwt.decode(access_token, app.config['SECRET_KEY'], algorithms=['HS256'])
             with db.get_session() as session:
-                current_user = session.query(User).filter(User.public_id == data['public_id']).first()
+                current_user = session.query(User).filter(User.public_id == uuid.UUID(data['public_id'])).first()
         except ExpiredSignatureError:
             return jsonify({
                 'err_message': 'Token is expired!',
@@ -48,12 +50,12 @@ def token_required(f):
 
 def get_tokens(current_user):
     access_token = jwt.encode({
-        'public_id': current_user.public_id,
+        'public_id': current_user.public_id.hex,
         'exp': datetime.utcnow() + timedelta(minutes=30)
     }, app.config['SECRET_KEY'])
 
     refresh_token = jwt.encode({
-        'public_id': current_user.public_id,
+        'public_id': current_user.public_id.hex,
         'exp': datetime.utcnow() + timedelta(hours=24)
     }, app.config['SECRET_KEY'])
 
@@ -82,6 +84,7 @@ def refresh_tokens(refresh_token):
 
 # route for logging user in
 @app.route('/login', methods=['POST'])
+@cross_origin()
 def login():
     # creates dictionary of form data
     auth = request.json
