@@ -1,5 +1,4 @@
 import uuid
-
 from sqlalchemy import select
 import jwt
 from jwt import ExpiredSignatureError, InvalidSignatureError, InvalidTokenError
@@ -13,6 +12,7 @@ from flask import jsonify, make_response, redirect, request, url_for
 from webapp.db.db_client import Task, User
 from loguru import logger
 from flask_cors import cross_origin
+from sqlalchemy import update
 
 
 @app.route('/')
@@ -193,17 +193,12 @@ def update_task(current_user, task_id):
     data = request.json
     with db.get_session() as session:
         try:
-            user = session.query(User).filter(User.public_id == current_user.public_id).first()
-            task = session.query(Task).filter(Task.uid == task_id).first()
-            for key, value in data:
-                task[key] = value
-
-            session.add(task)
-            user.tasks.append(task)
+            session.execute(update(Task).where(Task.uid ==task_id).values(**data))
+            session.flush()
             session.commit()
             return make_response('Task updated successfully', 201)
-        except Exception:
-            return make_response('Can not create this task!', 400)
+        except Exception as e:
+            return make_response(f'Can not update this task! Error {e}', 400)
 
 
 @app.route('/task/<task_id>')
