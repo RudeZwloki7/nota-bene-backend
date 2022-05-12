@@ -20,7 +20,8 @@ class DBClient:
 
         self.SessionLocal = sessionmaker(bind=self.connection.engine,
                                          autocommit=False,  # use autocommit on session.add
-                                         expire_on_commit=True
+                                         expire_on_commit=True,
+                                         autoflush=True
                                          # expire model after commit (requests data from database)
                                          )
 

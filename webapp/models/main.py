@@ -19,6 +19,7 @@ class User(Base):
 
 @dataclass
 class Task(Base):
+    uid:int
     label: str
     content: str
     date_expire: date

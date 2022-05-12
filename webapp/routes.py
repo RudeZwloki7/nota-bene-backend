@@ -1,4 +1,6 @@
 import uuid
+
+from sqlalchemy import select
 import jwt
 from jwt import ExpiredSignatureError, InvalidSignatureError, InvalidTokenError
 import json
@@ -170,17 +172,19 @@ def create_task(current_user):
         try:
             user = session.query(User).filter(User.public_id == current_user.public_id).first()
             task = Task(
+                uid=None,
                 label=data.get('label'),
                 content=data.get('content'),
                 date_expire=data.get('date_expire'),
                 datetime_expire=data.get('datetime_expire'),
             )
             session.add(task)
+            session.flush()
             user.tasks.append(task)
             session.commit()
             return make_response('Task created successfully', 201)
-        except Exception:
-            return make_response('Can not create this task!', 400)
+        except Exception as e:
+            return make_response(f'Can not create this task! Error {e}', 400)
 
 
 @app.route('/task/<task_id>', methods=["PATCH"])
