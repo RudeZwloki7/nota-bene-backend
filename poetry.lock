@@ -4,7 +4,7 @@ version = "1.7.7"
 description = "A database migration tool for SQLAlchemy."
 category = "main"
 optional = false
-python-versions = "3.8.0"
+python-versions = "3.8.13"
 
 [package.dependencies]
 importlib-metadata = {version = "*", markers = "python_version < \"3.9\""}
@@ -460,8 +460,8 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 
 [metadata]
 lock-version = "1.1"
-python-versions = "3.8.0"
-content-hash = "00b396059ff6778d219ec62d9209f486111feaa68820cdc0feb131d6dcb3d248"
+python-versions = "3.8.13"
+content-hash = "c357027831d832ef25c91990e2623b0d16b258bb6364c029281d003bf4033672"
 
 [metadata.files]
 alembic = [
