@@ -94,21 +94,21 @@ def login():
 
     if not auth or not auth.get('email') or not auth.get('password'):
         # returns 401 if any email or / and password is missing
-        return make_response(
-            'Could not verify',
-            401,
-            {'WWW-Authenticate': 'Basic realm ="Login required!"'}
+        return make_response(jsonify(
+            {'msg': 'Login required!'}
+        ),
+            401
         )
 
     with db.get_session() as session:
         user = session.query(User).filter(User.email == auth.get('email')).first()
 
     if not user:
-        # returns 401 if user does not exist
-        return make_response(
-            'Could not verify',
-            401,
-            {'WWW-Authenticate': 'Basic realm ="User does not exist!"'}
+        # returns 403 if user does not exist
+        return make_response(jsonify(
+            {'msg': 'User does not exist!'}
+        ),
+            403
         )
 
     if check_password_hash(user.password, auth.get('password')):
@@ -122,9 +122,10 @@ def login():
         }), 201)
     # returns 403 if password is wrong
     return make_response(
-        'Could not verify',
-        403,
-        {'WWW-Authenticate': 'Basic realm ="Wrong Password!"'}
+        jsonify(
+            {'msg': 'Wrong Password!'}
+        ),
+        403
     )
 
 
@@ -151,10 +152,10 @@ def register():
             session.add(user)
             session.commit()
 
-            return make_response('Successfully registered.', 201)
+            return make_response({'msg' :'Successfully registered.'}, 201)
         else:
             # returns 202 if user already exists
-            return make_response('User already exists. Please Log in.', 202)
+            return make_response({'msg' :'User already exists. Please Log in.'}, 409)
 
 
 @app.route('/tasks', methods=['GET'])
@@ -187,9 +188,9 @@ def create_task(current_user):
             session.flush()
             user.tasks.append(task)
             session.commit()
-            return make_response('Task created successfully', 201)
+            return make_response({'msg' :'Task created successfully'}, 201)
         except Exception as e:
-            return make_response(f'Can not create this task! Error {e}', 400)
+            return make_response({'msg' :f'Can not create this task! Error {e}'}, 400)
 
 
 @app.route('/task/<task_id>', methods=["PATCH"])
@@ -198,22 +199,22 @@ def update_task(current_user, task_id):
     data = request.json
     with db.get_session() as session:
         try:
-            session.execute(update(Task).where(Task.uid ==task_id).values(**data))
+            session.execute(update(Task).where(Task.uid == task_id).values(**data))
             session.flush()
             session.commit()
-            return make_response('Task updated successfully', 200)
+            return make_response({'msg' :'Task updated successfully'}, 200)
         except Exception as e:
-            return make_response(f'Can not update this task! Error {e}', 400)
+            return make_response({'msg' :f'Can not update this task! Error {e}'}, 400)
 
 
 @app.route('/task/<task_id>', methods=['DELETE'])
 @token_required
 def delete_task(current_user, task_id):
-     with db.get_session() as session:
+    with db.get_session() as session:
         try:
-            session.execute(delete(Task).where(Task.uid ==task_id))
+            session.execute(delete(Task).where(Task.uid == task_id))
             session.flush()
             session.commit()
-            return make_response('Task deleted successfully', 200)
+            return make_response({'msg' :'Task deleted successfully'}, 200)
         except Exception as e:
-            return make_response(f'Can not delete this task! Error {e}', 400)
+            return make_response({'msg' :f'Can not delete this task! Error {e}'}, 400)
