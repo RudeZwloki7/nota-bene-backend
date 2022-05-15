@@ -1,1 +1,1 @@
-from models.main import Base
+from webapp.models.main import Base

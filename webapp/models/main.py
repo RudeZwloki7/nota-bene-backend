@@ -1,8 +1,8 @@
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date, time
 from operator import index
 from sqlalchemy.orm import relationship
-from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String, Time
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from sqlalchemy.schema import Table
@@ -23,13 +23,13 @@ class Task(Base):
     label: str
     content: str
     date_expire: date
-    datetime_expire: datetime
+    time_expire: time
     is_complete: bool
 
     label = Column(String, default="Empty label")
     content = Column(String, default="")
     date_expire = Column(Date, default=None)
-    datetime_expire = Column(DateTime)
+    time_expire = Column(Time, default=None)
     is_complete = Column(Boolean, default=False)
 
     user_uid = Column(Integer, ForeignKey('user.uid'))

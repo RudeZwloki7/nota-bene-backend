@@ -1,3 +1,4 @@
+from email.policy import default
 import uuid
 from sqlalchemy import delete, select, update
 import jwt
@@ -176,7 +177,7 @@ def create_task(current_user):
                 label=data.get('label'),
                 content=data.get('content'),
                 date_expire=data.get('date_expire'),
-                datetime_expire=data.get('datetime_expire'),
+                time_expire=data.get('time_expire'),
             )
             session.add(task)
             session.flush()
