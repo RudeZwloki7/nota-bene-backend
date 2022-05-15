@@ -51,6 +51,7 @@ def token_required(f):
 
 def get_tokens(current_user):
     access_token = jwt.encode({
+        'username': current_user.name,
         'public_id': current_user.public_id.hex,
         'exp': datetime.utcnow() + timedelta(minutes=30)
     }, app.config['SECRET_KEY'])
