@@ -179,6 +179,10 @@ def create_task(current_user):
                 date_expire=data.get('date_expire'),
                 time_expire=data.get('time_expire'),
             )
+
+            if task.label == '':
+                task.label = 'Empty label'
+
             session.add(task)
             session.flush()
             user.tasks.append(task)
