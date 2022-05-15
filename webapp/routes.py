@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import select
+from sqlalchemy import delete, select, update
 import jwt
 from jwt import ExpiredSignatureError, InvalidSignatureError, InvalidTokenError
 import json
@@ -12,7 +12,6 @@ from flask import jsonify, make_response, redirect, request, url_for
 from webapp.db.db_client import Task, User
 from loguru import logger
 from flask_cors import cross_origin
-from sqlalchemy import update
 
 
 @app.route('/')
@@ -196,18 +195,19 @@ def update_task(current_user, task_id):
             session.execute(update(Task).where(Task.uid ==task_id).values(**data))
             session.flush()
             session.commit()
-            return make_response('Task updated successfully', 201)
+            return make_response('Task updated successfully', 200)
         except Exception as e:
             return make_response(f'Can not update this task! Error {e}', 400)
 
 
-@app.route('/task/<task_id>')
-@token_required
-def complete_task(current_user, task_id):
-    pass
-
-
-@app.route('/task/<task_id>')
+@app.route('/task/<task_id>', methods=['DELETE'])
 @token_required
 def delete_task(current_user, task_id):
-    pass
+     with db.get_session() as session:
+        try:
+            session.execute(delete(Task).where(Task.uid ==task_id))
+            session.flush()
+            session.commit()
+            return make_response('Task deleted successfully', 200)
+        except Exception as e:
+            return make_response(f'Can not delete this task! Error {e}', 400)
